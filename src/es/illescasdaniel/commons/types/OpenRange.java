@@ -23,12 +23,24 @@ public class OpenRange extends Range {
 	}
 
 	@NotNull
-	public static OpenRange to(final long last) {
+	public static OpenRange until(final long last) {
 		return new OpenRange(0, last);
 	}
 
 	@NotNull
-	public static OpenRange to(final long last, final long stride) {
+	public static OpenRange until(final long last, final long stride) {
 		return new OpenRange(0, last, stride);
+	}
+
+	@Deprecated
+	@NotNull
+	public static OpenRange to(final long last) {
+		return OpenRange.until(last);
+	}
+
+	@Deprecated
+	@NotNull
+	public static OpenRange to(final long last, final long stride) {
+		return OpenRange.until(last, stride);
 	}
 }

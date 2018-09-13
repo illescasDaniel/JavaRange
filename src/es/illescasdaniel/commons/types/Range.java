@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -54,7 +55,7 @@ public class Range implements Iterable<Long> {
 		}
 		this.first = first;
 		this.last = last;
-		this.stride = stride;
+		this.stride = Math.abs(stride);
 	}
 
 	public Range(final long first, final long last) {
@@ -72,14 +73,16 @@ public class Range implements Iterable<Long> {
 	}
 
 	public boolean contains(final long value) {
-		val valueInRangeWithoutStride = Math.min(this.first, this.last) <= value
-				&& value <= Math.max(this.first, this.last);
-		return valueInRangeWithoutStride
-				&& ((this.order == Order.ASCENDING ? (value - this.first) : (this.first - value)) % stride == 0);
+		val valueInRangeWithoutStride = Math.min(this.first, this.last) <= value && value <= Math.max(this.first, this.last);
+		return valueInRangeWithoutStride && ((this.order == Order.ASCENDING ? (value - this.first) : (this.first - value)) % stride == 0);
+	}
+
+	public Stream<Long> stream() {
+		return StreamSupport.stream(this.spliterator(), false);
 	}
 
 	public List<Long> toList() {
-		return StreamSupport.stream(this.spliterator(), false).collect(Collectors.toList());
+		return this.stream().collect(Collectors.toList());
 	}
 
 	public TreeSet<Long> toTreeSet() {
@@ -110,7 +113,6 @@ public class Range implements Iterable<Long> {
 				} else {
 					this.currentValue += ((order == Order.ASCENDING) ? 1 : -1) * stride;
 				}
-
 				return (order == Order.ASCENDING) ? (this.currentValue <= last) : (this.currentValue >= last);
 			}
 
