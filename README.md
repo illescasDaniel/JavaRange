@@ -1,5 +1,5 @@
 # JavaRange
-A class to easily mange ranges of values. Includes methods like "contains", "size", "toList", etc.
+A class to easily manage ranges of values. Includes methods like "contains", "size", "toList", etc.
 
 Dependencies:
 --
